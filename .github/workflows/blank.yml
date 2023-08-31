@@ -25,8 +25,8 @@ jobs:
      id: 'auth'
      uses: 'google-github-actions/auth@v1'
      with:
-       token_format: 'access_token'
-       # create_credentials_file: true
+       # token_format: 'access_token'
+       create_credentials_file: true
        workload_identity_provider: 'projects/https://iam.googleapis.com/projects/5375409120/locations/global/workloadIdentityPools/my-pool/providers/github/locations/global/workloadIdentityPools/my-pool/providers/github'
        service_account: 'packer-gcp@still-descent-389006.iam.gserviceaccount.com'
        # access_token_lifetime: '300s'
