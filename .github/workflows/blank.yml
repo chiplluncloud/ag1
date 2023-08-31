@@ -1,0 +1,61 @@
+name: github-runner
+on:
+ push:
+  branches:
+   - main
+
+jobs:
+ setup-prepare-list:
+  name: Setup, Prepare,
+  runs-on: ubuntu-latest
+  env:
+     PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  permissions:
+   contents: 'read'
+   id-token: 'write'
+
+  steps:
+   - name: Checkout
+     uses: actions/checkout@v3
+
+   # - name: Build Docker image
+   #   run: docker build -t state-level-tool:${{ github.sha }} .
+
+   - name: Authenticate with Google Cloud using WIF
+     id: 'auth'
+     uses: 'google-github-actions/auth@v1'
+     with:
+       token_format: 'access_token'
+       # create_credentials_file: true
+       workload_identity_provider: 'projects/https://iam.googleapis.com/projects/5375409120/locations/global/workloadIdentityPools/my-pool/providers/github/locations/global/workloadIdentityPools/my-pool/providers/github'
+       service_account: 'packer-gcp@still-descent-389006.iam.gserviceaccount.com'
+       # access_token_lifetime: '300s'
+       
+   - name: 'Set up Cloud SDK'
+     uses: 'google-github-actions/setup-gcloud@v1'
+     with:
+       version: '>= 442.0.0'
+   - id: 'gcloud'    
+     name: 'gcloud'
+     run: |-
+       gcloud config set project still-descent-38900 
+   # - name: Run Docker Commands as Root
+   #   run: |
+      # Run your Docker commands as the root user here
+      # mkdir sushant
+      # docker info
+      # docker ps -a
+      # user: root  # Run this step as the root user
+
+   # - name: SSH into VM and Manage Containers
+   #   run: |.
+   #    INSTANCE_NAME="testing-vm"
+   #    ZONE="asia-south1-b"
+
+      # SSH into the VM
+      # gcloud compute ssh $INSTANCE_NAME --zone=$ZONE --command="
+        # Delete the current container
+        # docker stop state-level-tool && docker rm state-level-tool
+
+        # # Start a new container with the image from GitHub Actions
+        # docker run -d --name state-level-tool -p 4000:4000 state-level-tool
