@@ -39,6 +39,8 @@ jobs:
      name: 'gcloud'
      run: |-
        gcloud config set project still-descent-38900 
+       gcloud compute instances list
+
    # - name: Run Docker Commands as Root
    #   run: |
       # Run your Docker commands as the root user here
